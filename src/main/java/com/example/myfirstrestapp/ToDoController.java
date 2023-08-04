@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 // loads in RestController for creating a Restful API
 @RestController
@@ -26,4 +29,11 @@ public class ToDoController {
              }
         return new ResponseEntity<String>("Error", HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("/todo")
+    public ResponseEntity<ToDo> create(@RequestBody ToDo newToDo) {
+        // save ToDo in db
+        return new ResponseEntity<ToDo>(newToDo, HttpStatus.OK);
+    }
+    
 }

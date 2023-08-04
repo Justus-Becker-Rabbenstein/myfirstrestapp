@@ -1,6 +1,6 @@
 package com.example.myfirstrestapp;
 
-public class ToDoDbModel {
+public class ToDo {
     
     private Integer id;
     private String description;
