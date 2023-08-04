@@ -8,32 +8,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 // loads in RestController for creating a Restful API
 @RestController
 public class ToDoController {
 
-    // responds to HTTP GET of /greet url
-    @GetMapping("/greet")
+    // responds to HTTP GET of /todo url
+    @GetMapping("/todo")
 
-    // method that is run on requesting /greet url from Tomcat server
-    // if no request param (just opening localhost:8080/greet) responds with Hello
-    // and defaultValue String
-    // if with request param localhost:8080/greet?name=Peter responds with Hello
-    // Peter
-    // defaultValue is method parameter of Srping framework
-    public ResponseEntity<String> hello(
-        @RequestParam(value = "name", defaultValue = "World, since no @RequestParam") String name) {
-            if (name.equals("admin")) {
-             return new ResponseEntity<String>("Hello " + name, HttpStatus.OK);
-             }
-        return new ResponseEntity<String>("Error", HttpStatus.BAD_REQUEST);
+    // method that is run on requesting /todo url from Tomcat server
+    // defaultValue is with no requestparam
+    // not defaultValue is with requestparam
+    public ResponseEntity<ToDo> readTodo(
+            @RequestParam(value = "id") int id) {
+                ToDo newToDo = new ToDo();
+                newToDo.setId(id);
+                newToDo.setDescription("Einkaufen gehen");
+                newToDo.setIsDone(true);
+
+        return new ResponseEntity<ToDo>(newToDo, HttpStatus.OK);
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<ToDo> create(@RequestBody ToDo newToDo) {
-        // save ToDo in db
+    public ResponseEntity<ToDo> createToDo(@RequestBody ToDo newToDo) {
         return new ResponseEntity<ToDo>(newToDo, HttpStatus.OK);
     }
-    
+
 }
