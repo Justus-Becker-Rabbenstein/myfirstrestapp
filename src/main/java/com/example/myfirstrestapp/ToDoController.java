@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Optional;
+
 // loads in RestController for creating a Restful API
 @RestController
 public class ToDoController {
@@ -23,14 +25,15 @@ public class ToDoController {
     // method that is run on requesting /todo url from Tomcat server
     // defaultValue is with no requestparam
     // not defaultValue is with requestparam
-    public ResponseEntity<ToDo> readTodo(
-            @RequestParam(value = "id") int id) {
-                ToDo newToDo = new ToDo();
-                newToDo.setId(id);
-                newToDo.setDescription("Einkaufen gehen");
-                newToDo.setIsDone(true);
+    public ResponseEntity<ToDo> readTodo(@RequestParam(value = "id") int id) {
+        // get todo from db by id
+        Optional<ToDo> toDoInDb =  toDoRepository.findById(id);
 
-        return new ResponseEntity<ToDo>(newToDo, HttpStatus.OK);
+        if (toDoInDb.isPresent()){
+            return new ResponseEntity<ToDo>(toDoInDb.get(), HttpStatus.OK);
+        }
+        // kein else notwendig, da return
+            return new ResponseEntity ("No todo found with id: " + id, HttpStatus.NOT_FOUND);
     }
 
     // save new todo in database
