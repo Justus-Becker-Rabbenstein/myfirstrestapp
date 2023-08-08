@@ -55,4 +55,17 @@ public class ToDoController {
         }
         return new ResponseEntity("Deletion in database of the id: " + id + " failed.", HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/todo")
+    public ResponseEntity<ToDo> editOneToDo(@RequestBody ToDo putToDo) {
+
+        Optional<ToDo> toDoInDb = toDoRepository.findById(putToDo.getId());
+
+        if (toDoInDb.isPresent()) {
+            // update
+            ToDo savedToDo = toDoRepository.save(putToDo);
+            return new ResponseEntity<ToDo>(savedToDo, HttpStatus.OK);
+        }
+        return new ResponseEntity("ToDo update of id: " + putToDo.getId() + " failed.", HttpStatus.NOT_FOUND);
+    }
 }
