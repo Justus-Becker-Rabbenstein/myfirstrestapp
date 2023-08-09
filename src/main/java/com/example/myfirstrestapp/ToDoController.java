@@ -68,4 +68,18 @@ public class ToDoController {
         }
         return new ResponseEntity("ToDo update of id: " + putToDo.getId() + " failed.", HttpStatus.NOT_FOUND);
     }
+
+    @PatchMapping("/todo/setDone")
+    public ResponseEntity<ToDo> setIsDone(@RequestParam(value = "isDone")boolean isDone,
+                                          @RequestParam(value = "id") int id) {
+
+        Optional<ToDo> toDoInDb = toDoRepository.findById(id);
+
+        if (toDoInDb.isPresent()) {
+            toDoInDb.get().setIsDone(isDone);
+            ToDo patchedToDo = toDoRepository.save(toDoInDb.get());
+            return new ResponseEntity<ToDo>(patchedToDo, HttpStatus.OK);
+        }
+        return new ResponseEntity("Could not set state of isDone in ToDo with id: " + id, HttpStatus.NOT_FOUND);
+    }
 }
