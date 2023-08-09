@@ -16,6 +16,8 @@ public class ToDo {
     private String description;
     private boolean isDone;
 
+    /* --- Getter and Setter */
+
     public Integer getId() {
         return this.id;
     }
