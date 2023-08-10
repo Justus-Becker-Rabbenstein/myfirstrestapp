@@ -2,22 +2,24 @@ package com.example.myfirstrestapp;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class User {
 
     /* --- Variables --- */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Column(unique = true, nullable = false)
     private String email;
-
     @Column(nullable = false)
     private String password;
+    @OneToMany
+    @JoinColumn(name = "userId")
+    private Set<ToDo> toDos;
 
     /* --- Getter and Setter --- */
-
     public Integer getId() {
         return id;
     }
@@ -40,5 +42,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<ToDo> getToDos() {
+        return toDos;
+    }
+
+    public void setToDos(Set<ToDo> toDos) {
+        this.toDos = toDos;
     }
 }
