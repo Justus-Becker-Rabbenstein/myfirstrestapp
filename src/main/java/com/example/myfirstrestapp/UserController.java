@@ -25,4 +25,13 @@ public class UserController {
         }
         return new ResponseEntity("Kein Nutzer gefunden.", HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/validate")
+    private boolean validate(@RequestParam(value = "email")String email,
+                                                @RequestParam(value = "password")String password) {
+
+        var validUser = userRepository.findByEmailAndPassword(email, password);
+
+        return validUser.isPresent();
+    }
 }
