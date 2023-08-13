@@ -5,11 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-// erstellt Tabelle in Datenbank und verwaltet diese
+// @Entity is Hibernate ORM for creating an entity in the database
 @Entity
 public class ToDo {
 
-    // legt die ID/primary key fest
+    // @Id for generating primary key, @GeneratedValue for auto increment
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

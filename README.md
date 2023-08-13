@@ -1,3 +1,14 @@
+# Required software
+- mySQL database server
+- imported structure and data of sql scripts in repository
+- software for testing API endpoints, e.g. Postman
+
+# Setting up mySQL database
+run 
+1. mySQLToDoDB.sql
+2. todoapp_user.sql
+3. todoapp_to_do.sql
+
 # Read Me First
 The following was discovered as part of building this project:
 

@@ -1,3 +1,5 @@
+// data model for hibernate
+
 package com.example.myfirstrestapp;
 
 import org.springframework.data.repository.CrudRepository;
