@@ -2,7 +2,6 @@ package com.example.myfirstrestapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,8 @@ public class ToDoController {
     // Dependency Injection des CRUD Operations Objekts
     @Autowired
     private ToDoRepository toDoRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     // responds to HTTP GET of /todo url
     @GetMapping("/todo")
@@ -34,9 +35,13 @@ public class ToDoController {
     }
 
     @GetMapping("/todo/all")
-    public ResponseEntity<Iterable<ToDo>> getAllToDo() {
-        Iterable<ToDo> allToDosInDb = toDoRepository.findAll();
-        return new ResponseEntity<Iterable<ToDo>>(allToDosInDb, HttpStatus.OK);
+    public ResponseEntity<Iterable<ToDo>> getAllToDo(@RequestHeader("api-secret") String secret) {
+        var userBySecret = userRepository.findBySecret(secret);
+        if (userBySecret.isPresent()) {
+            Iterable<ToDo> allToDosInDb = toDoRepository.findAllByUserId(userBySecret.get().getId());
+            return new ResponseEntity<Iterable<ToDo>>(allToDosInDb, HttpStatus.OK);
+        }
+        return  new ResponseEntity("Invalid API secret. ", HttpStatus.BAD_REQUEST);
     }
 
     // save new todo in database
