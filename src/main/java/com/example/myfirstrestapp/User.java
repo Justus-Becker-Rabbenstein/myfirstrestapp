@@ -1,3 +1,5 @@
+// Data model for Hibernate
+
 package com.example.myfirstrestapp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-// loads in RestController for creating a Restful API
+// loads in Spring RestController for creating a Restful API
 @RestController
 public class ToDoController {
 
-    // Dependency Injection des CRUD Operations Objekts
+    // Dependecy injection (object) of ToDoRepository / userRepository with Crud methods
     @Autowired
     private ToDoRepository toDoRepository;
     @Autowired
     private UserRepository userRepository;
 
-    // responds to HTTP GET of /todo url
+    // URL /todo of http get will responds with the code in this method
     @GetMapping("/todo")
 
     // method that is run on requesting /todo url from Tomcat server
     // defaultValue is with no requestparam
-    // not defaultValue is with requestparam
+    // not defaultValue is with requestparam (/todo?...)
     public ResponseEntity<ToDo> getOneToDo(@RequestParam(value = "id") int id) {
         // get a single todo from db by id
         Optional<ToDo> toDoInDb =  toDoRepository.findById(id);
@@ -30,10 +30,11 @@ public class ToDoController {
         if (toDoInDb.isPresent()){
             return new ResponseEntity<ToDo>(toDoInDb.get(), HttpStatus.OK);
         }
-        // kein else notwendig, da return
+        // no else required, since return statement quits method if true
             return new ResponseEntity ("No todo found with id: " + id, HttpStatus.NOT_FOUND);
     }
 
+    // return all todos of single user when given api secret
     @GetMapping("/todo/all")
     public ResponseEntity<Iterable<ToDo>> getAllToDo(@RequestHeader("api-secret") String secret) {
         var userBySecret = userRepository.findBySecret(secret);
@@ -51,6 +52,7 @@ public class ToDoController {
         return new ResponseEntity<ToDo>(newToDo, HttpStatus.CREATED);
     }
 
+    // delete one todo
     @DeleteMapping("/todo")
     public ResponseEntity deleteOneToDo(@RequestParam(value = "id") int id) {
         Optional<ToDo> toDoInDb = toDoRepository.findById(id);
@@ -61,6 +63,7 @@ public class ToDoController {
         return new ResponseEntity("Deletion in database of the id: " + id + " failed.", HttpStatus.NOT_FOUND);
     }
 
+    // update any task of todos
     @PutMapping("/todo")
     public ResponseEntity<ToDo> editOneToDo(@RequestBody ToDo putToDo) {
 
@@ -74,6 +77,7 @@ public class ToDoController {
         return new ResponseEntity("ToDo update of id: " + putToDo.getId() + " failed.", HttpStatus.NOT_FOUND);
     }
 
+    // update only isDone status
     @PatchMapping("/todo/setDone")
     public ResponseEntity<ToDo> setIsDone(@RequestParam(value = "isDone")boolean isDone,
                                           @RequestParam(value = "id") int id) {
