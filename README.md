@@ -1,3 +1,6 @@
+# Tech-Stack
+Java, Spring Boot, RESTful API, Jakarta Persistance API (ORM / object-relational mapping), mySQL server
+
 # Required software
 - mySQL database server
 - imported structure and data of sql scripts in repository
